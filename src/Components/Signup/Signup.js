@@ -14,27 +14,24 @@ export default function Signup() {
   const [email,setEmail]= useState('')
   const [phone,setPhone]= useState('')
   const [password,setPassword]= useState('')
- const {firebase}=useContext(FirebaseContext)
- const auth = getAuth();
- const db=getFirestore(firebase)
- const navigate=useNavigate()
+  const {firebase}=useContext(FirebaseContext)
+  const auth = getAuth();
+  const db=getFirestore(firebase)
+  const navigate=useNavigate()
 
- const handleSubmit=async(e)=>{
+  const handleSubmit=async(e)=>{
   e.preventDefault();
   try {
   const result=await createUserWithEmailAndPassword(auth, email, password)
   const user = result.user;
   await updateProfile(user, { displayName: userName });
-    console.log(user, 'user');
   const usersCollection = collection(db,'users');
-  console.log("mukalk");
   await setDoc(doc(usersCollection, result.user.uid), {
     id: result.user.uid,
     userDisplay: userName,
     email: email,
     phone: phone
   })
-  console.log("thazhey");
 
   navigate('/login');
  } catch (error) {
